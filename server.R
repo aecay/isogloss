@@ -106,8 +106,6 @@ shinyServer(function (input, output, session) {
             stop("Columns not properly specified")
         }
 
-        print(head(dfr()))
-
         plot <- ggplot(aes_string(x = input$lon.col, y = input$lat.col),
                        data = dfr())
 
