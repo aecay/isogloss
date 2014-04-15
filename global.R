@@ -1,6 +1,10 @@
-install.packages(setdiff(c("rgeos","ggmap","mapdata","ggplot2","deldir","igraph",
+missing.pkgs <- setdiff(c("rgeos","ggmap","mapdata","ggplot2","deldir","igraph",
                            "sp","plyr"),
-                         rownames(installed.packages())))
+                         rownames(installed.packages()))
+
+if (length(missing.pkgs) > 0) {
+    install.packages(missing.pkgs)
+}
 
 library(ggplot2)
 library(mapdata)
