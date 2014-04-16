@@ -33,8 +33,9 @@ make.isonet2 <- function(lon, lat, factor, level,
     for (i in 1:nrow(delaunay)) {
         a <- delaunay[i,]$ind1
         b <- delaunay[i,]$ind2
-        if ((factor[a] == level && factor[b] == level) ||
-            (factor[a] != level && factor[b] != level)) {
+        if (!is.na(factor[a]) && !is.na(factor[b]) &&
+            ((factor[a] == level && factor[b] == level) ||
+             (factor[a] != level && factor[b] != level))) {
             cliques <- rbind(cliques, data.frame(a = a, b = b))
         }
     }
@@ -46,7 +47,8 @@ make.isonet2 <- function(lon, lat, factor, level,
     for (i in 1:nrow(voronoi)) {
         a <- voronoi[i,]$ind1
         b <- voronoi[i,]$ind2
-        if (((factor[a] == level && factor[b] != level) ||
+        if (!is.na(factor[a]) && !is.na(factor[b]) &&
+            ((factor[a] == level && factor[b] != level) ||
              (factor[a] != level && factor[b] == level)) &&
             ## TODO: make 2 and 3 customizable
             (isTRUE(cl$csize[cl$membership[a]] > oneClique) ||
