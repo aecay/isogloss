@@ -3,6 +3,9 @@ library(plyr)
 library(maps)
 library(mapdata)
 
+## TODO: heuristic to detect which country/ies might be desired, and
+## pre-select them in the map dropdown
+
 shinyServer(function (input, output, session) {
 
     ## A box to select from data frames in the current environment
@@ -19,7 +22,7 @@ shinyServer(function (input, output, session) {
 
     observe({
         if (!is.null(input$df.name) && input$df.name != "") {
-            df <- get(input$df.name, .GlobalEnv)
+            df <- dfr()
             cols <- colnames(df)
 
             fac.cols <- character()
@@ -39,20 +42,24 @@ shinyServer(function (input, output, session) {
 
             lat.match <- grep("lat", num.cols, ignore.case = TRUE)
             if (!is.na(lat.match)) {
-                lat.col <- cols[lat.match[1]]
+                lat.col <- num.cols[lat.match[1]]
             } else {
                 lat.col <- NULL
             }
 
             lon.match <- grep("lon", num.cols, ignore.case = TRUE)
             if (!is.na(lon.match)) {
-                lon.col <- cols[lon.match[1]]
+                lon.col <- num.cols[lon.match[1]]
             } else {
                 lon.col <- NULL
             }
 
-            updateSelectInput(session, "lat.col", choices = num.cols)
-            updateSelectInput(session, "lon.col", choices = num.cols)
+            updateSelectInput(session, "lat.col", choices = num.cols,
+                              selected = lat.col)
+            updateSelectInput(session, "lon.col", choices = num.cols,
+                              selected = lon.col)
+            ## TODO: heuristic on the number of factor groups (to avoid
+            ## selecting ZIP as a col)
             updateSelectInput(session, "fac.col", choices = fac.cols,
                               selected = fac.cols[1])
         }
