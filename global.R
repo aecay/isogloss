@@ -94,10 +94,10 @@ make.isonet2 <- function(lon, lat, factor, level,
 plot.isonet <- function (edgelines, map = NULL) {
     if (!is.null(map)) {
         plot <- list(
-            geom_path(aes(x = long, y = lat, group = group), data = edgelines),
             theme_nothing(legend = TRUE),
             geom_polygon(aes(x = long, y = lat, group = group),
-                         data = map, color = "grey50", fill = NA))
+                         data = map, color = "grey50", fill = NA),
+            geom_path(aes(x = long, y = lat, group = group), data = edgelines))
     } else {
         plot <- list(
             geom_path(aes(x = long, y = lat, group = group), data = edgelines),
